@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý công việc hàng ngày</title>
+    <style>
+        /* CSS cho tiêu đề */
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* CSS cho biểu mẫu thêm công việc */
+        #task-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #task-input {
+            padding: 5px;
+            width: 200px;
+            border: 1px solid #ccc;
+        }
+
+        #add-task {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* CSS cho danh sách công việc */
+        #task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quản lý công việc hàng ngày</h1>
+    
+    <!-- Biểu mẫu để thêm công việc -->
+    <form id="task-form">
+        <input type="text" id="task-input" placeholder="Thêm công việc hàng ngày">
+        <button type="button" id="add-task">Thêm</button>
+    </form>
+    
+    <!-- Danh sách công việc -->
+    <ul id="task-list"></ul>
+
+    <script>
+        // Mảng lưu trữ danh sách công việc
+        const tasks = [];
+
+        // Hàm để thêm công việc
+        function addTask() {
+            const taskInput = document.getElementById("task-input");
+            const taskText = taskInput.value.trim();
+            if (taskText !== "") {
+                tasks.push({ text: taskText, completed: false });
+                taskInput.value = "";
+                renderTasks();
+            }
+        }
+
+        // Hàm để hiển thị danh sách công việc
+        function renderTasks() {
+            const taskList = document.getElementById("task-list");
+            taskList.innerHTML = "";
+
+            tasks.forEach((task, index) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = task.text;
+                if (task.completed) {
+                    listItem.classList.add("completed");
+                } else {
+                    listItem.classList.remove("completed");
+                }
+
+                // Tạo nút để đánh dấu công việc là hoàn thành
+                const completeButton = document.createElement("button");
+                completeButton.textContent = "Hoàn thành";
+                completeButton.addEventListener("click", () => completeTask(index));
+                listItem.appendChild(completeButton);
+
+                taskList.appendChild(listItem);
+            });
+        }
+
+        // Hàm để đánh dấu công việc là hoàn thành
+        function completeTask(index) {
+            if (index >= 0 && index < tasks.length) {
+                tasks[index].completed = true;
+                renderTasks();
+            }
+        }
+
+        // Lắng nghe sự kiện khi nút "Thêm" được nhấn
+        document.getElementById("add-task").addEventListener("click", addTask);
+
+        // Hiển thị danh sách công việc ban đầu
+        renderTasks();
+    </script>
+</body>
+</html>
